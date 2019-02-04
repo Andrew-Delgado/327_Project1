@@ -14,6 +14,14 @@ while(scnnaer1.next())
 }
 
 */
+struct thread_data{
+
+int arrayLeft[3][3];
+int arrayRight[3][3];
+int resultArray[3][3];
+int rowLeft;
+int columnRight;
+}
 
 data.leftArray[0][1] = 1;
 data.leftArray[0][2] = 2;
@@ -58,14 +66,7 @@ my_data = (struct thread_data *) t;
 
 }
 
-struct thread_data{
 
-int arrayLeft[3][3];
-int arrayRight[3][3];
-int resultArray[3][3];
-int rowLeft;
-int columnRight;
-}
 
 //int main (int argc, char *argv[]) {
 int main () {
