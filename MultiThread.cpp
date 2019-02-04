@@ -49,6 +49,7 @@ my_data = (struct thread_data *) t;
 //int main (int argc, char *argv[]) {
 int main () {
 
+pthread_t threads[NUM_THREADS];
 thread_data data;
 
 data.leftArray[0][1] = 1;
@@ -76,9 +77,14 @@ for(int row = 0; row < 3; row++) {
   //I think we might have to put our thread creation function here. I need to think about it more.
   //I'm unsure if a single thread we create will run 'matrixMath' once and then terminate,
   //or just go on and loop when we don't want it to.
-
   data.rowLeft = row;
   data.columnRight = column;
+  rc = pthread_create(&threads[i], NULL, matrix_mult, (void *)&data);
+
+  if (rc) {
+     cout << "Error:unable to create thread," << rc << endl;
+     exit(-1);
+  }
 
     }
   }
