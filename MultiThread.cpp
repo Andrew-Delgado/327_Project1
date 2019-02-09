@@ -9,15 +9,6 @@
 
 #define NUM_THREADS 9
 using namespace std;
-/*
-while(scnnaer1.next())
-{
-  element = scanner1.hasNext();
-  element = scanner1.next();
-  val = std::atoi(element.cstr())
-}
-*/
-
 
 int leftArray[3][3];
 int rightArray[3][3];
@@ -42,10 +33,8 @@ void *matrix_mult(void *t) {
   pthread_exit(NULL);
 }
 
-
-
 //int main (int argc, char *argv[]) {
-int main () {
+int main (int argc, char*argv[]) {
 
   int rc;
   int i;
@@ -55,25 +44,38 @@ int main () {
   int threadCount = 0;
   thread_data *data[9];
 
-  leftArray[0][0] = 1;
-  leftArray[0][1] = 2;
-  leftArray[0][2] = 3;
-  leftArray[1][0] = 4;
-  leftArray[1][1] = 5;
-  leftArray[1][2] = 6;
-  leftArray[2][0] = 7;
-  leftArray[2][1] = 8;
-  leftArray[2][2] = 9;
 
-  rightArray[0][0] = 5;
-  rightArray[0][1] = 5;
-  rightArray[0][2] = 45;
-  rightArray[1][0] = 1;
-  rightArray[1][1] = 6;
-  rightArray[1][2] = 7;
-  rightArray[2][0] = 55;
-  rightArray[2][1] = 11;
-  rightArray[2][2] = 10;
+  string inFile1 = "";
+  string inFile2 = "";
+  string stringNumber = "";
+
+  Scanner input1, input2;
+
+  Utils::CheckArgs(2, argc, argv, "infilename (first matrix) infilename2 (second matrix)");
+
+  inFile1 = static_cast<string>(argv[1]);
+  inFile2 = static_cast<string>(argv[2]);
+
+  input1.openFile(inFile1);
+  input2.openFile(inFile2);
+
+  //leftArray
+  for(int x = 0; x < 3 && input1.hasNext(); x++){
+    for(int y = 0; y < 3; y++){
+
+    stringNumber = input1.next();
+    leftArray[x][y] = stoi(stringNumber);
+  }
+}
+
+  //rightArray
+  for(int x = 0; x < 3 && input2.hasNext(); x++){
+    for(int y = 0; y < 3; y++){
+
+    stringNumber = input2.next();
+    rightArray[x][y] = stoi(stringNumber);
+  }
+}
 
   // Initialize and set thread joinable
   pthread_attr_init(&attr);
