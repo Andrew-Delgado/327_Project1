@@ -17,10 +17,13 @@ while(scnnaer1.next())
   val = std::atoi(element.cstr())
 }
 */
+
+
+int leftArray[3][3];
+int rightArray[3][3];
+int resultArray[3][3];
+
 struct thread_data {
-  int leftArray[3][3];
-  int rightArray[3][3];
-  int resultArray[3][3];
   int rowLeft;
   int columnRight;
 };
@@ -31,11 +34,11 @@ void *matrix_mult(void *t) {
 
   int x,y,z;
 
-  x = my_data->leftArray[my_data->rowLeft][0]* my_data->rightArray[0][my_data->columnRight];
-  y = my_data->leftArray[my_data->rowLeft][1]* my_data->rightArray[1][my_data->columnRight];
-  z = my_data->leftArray[my_data->rowLeft][2]* my_data->rightArray[2][my_data->columnRight];
+  x = leftArray[my_data->rowLeft][0]* rightArray[0][my_data->columnRight];
+  y = leftArray[my_data->rowLeft][1]* rightArray[1][my_data->columnRight];
+  z = leftArray[my_data->rowLeft][2]* rightArray[2][my_data->columnRight];
 
-  my_data->resultArray[my_data->rowLeft][my_data->columnRight] = x + y + z;
+  resultArray[my_data->rowLeft][my_data->columnRight] = x + y + z;
   pthread_exit(NULL);
 }
 
@@ -50,42 +53,45 @@ int main () {
   pthread_attr_t attr;
   void *status;
   int threadCount = 0;
-  struct thread_data data = {};
+  thread_data *data[9];
 
-  data.leftArray[0][0] = 1;
-  data.leftArray[0][1] = 2;
-  data.leftArray[0][2] = 3;
-  data.leftArray[1][0] = 4;
-  data.leftArray[1][1] = 5;
-  data.leftArray[1][2] = 6;
-  data.leftArray[2][0] = 7;
-  data.leftArray[2][1] = 8;
-  data.leftArray[2][2] = 9;
+  leftArray[0][0] = 1;
+  leftArray[0][1] = 2;
+  leftArray[0][2] = 3;
+  leftArray[1][0] = 4;
+  leftArray[1][1] = 5;
+  leftArray[1][2] = 6;
+  leftArray[2][0] = 7;
+  leftArray[2][1] = 8;
+  leftArray[2][2] = 9;
 
-  data.rightArray[0][0] = 1;
-  data.rightArray[0][1] = 2;
-  data.rightArray[0][2] = 3;
-  data.rightArray[1][0] = 4;
-  data.rightArray[1][1] = 5;
-  data.rightArray[1][2] = 6;
-  data.rightArray[2][0] = 7;
-  data.rightArray[2][1] = 8;
-  data.rightArray[2][2] = 9;
+  rightArray[0][0] = 5;
+  rightArray[0][1] = 5;
+  rightArray[0][2] = 45;
+  rightArray[1][0] = 1;
+  rightArray[1][1] = 6;
+  rightArray[1][2] = 7;
+  rightArray[2][0] = 55;
+  rightArray[2][1] = 11;
+  rightArray[2][2] = 10;
 
   // Initialize and set thread joinable
   pthread_attr_init(&attr);
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
+  int j = 0;
   for(int row = 0; row < 3; row++) {
     for(int column = 0; column < 3; column++) {
 
       cout << "main() : creating thread, " << i << endl;
 
-      data.rowLeft = row;
-      data.columnRight = column;
+      data[j] = new thread_data;
+      data[j]->rowLeft = row;
+      data[j]->columnRight = column;
 
-      rc = pthread_create(&threads[threadCount], NULL, matrix_mult, (void *)&data);
+      rc = pthread_create(&threads[threadCount], NULL, matrix_mult, (void *)&(*data[j]));
       threadCount++;
+      j++;
 
       if (rc) {
         cout << "Error:unable to create thread," << rc << endl;
@@ -109,8 +115,8 @@ int main () {
      cout << "  exiting with status :" << status << endl;
   }
 
-  cout << data.resultArray[0][0] << " " << data.resultArray[0][1] << " " << data.resultArray[0][2] << endl;
-  cout << data.resultArray[1][0] << " " << data.resultArray[1][1] << " " << data.resultArray[1][2] << endl;
-  cout << data.resultArray[2][0] << " " << data.resultArray[2][1] << " " << data.resultArray[2][2]<< endl;
+  cout << resultArray[0][0] << " " << resultArray[0][1] << " " << resultArray[0][2] << endl;
+  cout << resultArray[1][0] << " " << resultArray[1][1] << " " << resultArray[1][2] << endl;
+  cout << resultArray[2][0] << " " << resultArray[2][1] << " " << resultArray[2][2]<< endl;
   //pthread_exit(NULL);
 }
