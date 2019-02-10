@@ -1,3 +1,11 @@
+/*
+* Project 1 - Solving a 3x3 matrix with threads
+* @author Andrew Delado, Christian Baiza
+* @2-10-19
+* @version 1.0
+*
+*/
+
 #include <iostream>
 #include <cstdlib>
 #include <pthread.h>
