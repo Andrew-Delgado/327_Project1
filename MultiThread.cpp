@@ -1,6 +1,6 @@
 /*
 * Project 1 - Solving a 3x3 matrix with threads
-* @author Andrew Delado, Christian Baiza
+* @author Andrew Delgado, Christian Baiza
 * @2-10-19
 * @version 1.0
 *
@@ -27,6 +27,8 @@ struct thread_data {
   int columnRight;
 };
 
+
+//matrix_mult: Multiplies the row of the first array with the column of the second array
 void *matrix_mult(void *t) {
   struct thread_data *my_data;
   my_data = (struct thread_data *) t;
@@ -41,7 +43,6 @@ void *matrix_mult(void *t) {
   pthread_exit(NULL);
 }
 
-//int main (int argc, char *argv[]) {
 int main (int argc, char*argv[]) {
 
   int rc;
@@ -59,6 +60,7 @@ int main (int argc, char*argv[]) {
 
   Scanner input1, input2;
 
+  //Gets filenames for input matrices
   Utils::CheckArgs(2, argc, argv, "infilename (first matrix) infilename2 (second matrix)");
 
   inFile1 = static_cast<string>(argv[1]);
